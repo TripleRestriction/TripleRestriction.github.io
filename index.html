@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Silver's site</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --oxo-base00: #161616;
+            --oxo-base01: #262626;
+            --oxo-base02: #393939;
+            --oxo-base03: #525252;
+            --oxo-base04: #dde1e6;
+            --oxo-base05: #f2f4f8;
+            --oxo-base06: #ffffff;
+            --oxo-red: #ff7eb6;
+            --oxo-orange: #ff6f00;
+            --oxo-yellow: #ffd60a;
+            --oxo-green: #42be65;
+            --oxo-cyan: #82cfff;
+            --oxo-blue: #78a9ff;
+            --oxo-purple: #be95ff;
+            --accent-pink: #ee5396;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', 'Courier New', 'Liberation Mono', 'DejaVu Sans Mono', monospace;
+            background: var(--oxo-base00);
+            color: var(--oxo-base05);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(82, 82, 82, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(82, 82, 82, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 3rem;
+            background: var(--oxo-base01);
+            border: 2px solid var(--oxo-base03);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--oxo-cyan);
+        }
+
+        .main-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--oxo-base04);
+            line-height: 1.6;
+        }
+
+        .sub-text {
+            font-size: 1rem;
+            color: var(--oxo-base03);
+        }
+
+        .accent {
+            color: var(--accent-pink);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .main-text {
+                font-size: 1.1rem;
+            }
+            
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+                width: calc(100% - 2rem);
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .main-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to <span class="accent">Silver's</span> site</h1>
+        <p class="main-text">I like <span class="accent">computers</span></p>
+        <p class="sub-text">(You will see my <span class="accent">projects</span> here probably)</p>
+    </div>
+</body>
+</html>
