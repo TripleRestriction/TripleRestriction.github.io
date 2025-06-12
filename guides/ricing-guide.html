@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricing Guide - Silver's site</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --oxo-base00: #161616;
+            --oxo-base01: #262626;
+            --oxo-base02: #393939;
+            --oxo-base03: #525252;
+            --oxo-base04: #dde1e6;
+            --oxo-base05: #f2f4f8;
+            --oxo-base06: #ffffff;
+            --oxo-red: #ff7eb6;
+            --oxo-orange: #ff6f00;
+            --oxo-yellow: #ffd60a;
+            --oxo-green: #42be65;
+            --oxo-cyan: #82cfff;
+            --oxo-blue: #78a9ff;
+            --oxo-purple: #be95ff;
+            --accent-pink: #ee5396;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Share Tech Mono', 'Courier New', 'Liberation Mono', 'DejaVu Sans Mono', monospace;
+            background: var(--oxo-base00);
+            color: var(--oxo-base05);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(82, 82, 82, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(82, 82, 82, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        .container {
+            text-align: left;
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 2rem;
+            background: var(--oxo-base01);
+            border: 2px solid var(--oxo-base03);
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--oxo-cyan);
+            text-align: center;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--oxo-base03);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .guide-content {
+            font-size: 1rem;
+            color: var(--oxo-base04);
+            line-height: 1.6;
+        }
+        .guide-content h2 {
+            color: var(--oxo-cyan);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .guide-content h3 {
+            color: var(--accent-pink);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        .guide-content p {
+            margin-bottom: 1rem;
+        }
+        .guide-content ul, .guide-content ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        .guide-content li {
+            margin-bottom: 0.5rem;
+        }
+        .guide-content code {
+            background: var(--oxo-base02);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            color: var(--oxo-yellow);
+        }
+        .guide-content pre {
+            background: var(--oxo-base02);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        .guide-content pre code {
+            background: none;
+            padding: 0;
+        }
+        .accent {
+            color: var(--accent-pink);
+            font-weight: 700;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: var(--oxo-base01);
+            border-right: 2px solid var(--oxo-base03);
+            transition: left 0.3s ease;
+            z-index: 100;
+            padding: 2rem 1rem;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sidebar h3 {
+            color: var(--oxo-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .sidebar ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        .sidebar li {
+            margin-bottom: 0.5rem;
+        }
+        .sidebar a {
+            color: var(--oxo-base05);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            color: var(--accent-pink);
+            background: var(--oxo-base02);
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: var(--oxo-base02);
+            color: var(--oxo-base05);
+            border: 2px solid var(--oxo-base03);
+            padding: 0.8rem;
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .menu-toggle:hover {
+            background: var(--oxo-base03);
+            color: var(--accent-pink);
+        }
+        .menu-toggle.hidden {
+            left: -100px;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 22, 22, 0.8);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .github-link {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--oxo-base02);
+            color: var(--oxo-base05);
+            padding: 1rem;
+            border: 2px solid var(--oxo-base03);
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .github-link:hover {
+            background: var(--oxo-base03);
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+            transform: translateY(-2px);
+        }
+        .github-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .github-link {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .guide-content {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    
+    <div class="sidebar" id="sidebar">
+        <h3><span class="accent">Menu</span></h3>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+        </ul>
+        
+        <h3><span class="accent">Guides</span></h3>
+        <ul>
+            <li><a href="ricing-guide.html">Ricing Guide</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h1>How to 🍚</h1>
+        <p class="subtitle">how to customize your linux desktop</p>
+        
+        <div class="guide-content">
+            <!-- START: Type your guide content here -->
+            <p>Ricing is an art, you wanna learn this art. You see those cool reddit posts, or your nerd friend or perhaps PewDiePie and want your setup to look like that, then fear not! You are at the rice (pun intended) spot!</p>
+            
+            <h2>What is Ricing?</h2>
+            <p>Wait wait wait hold on.... What is Ricing? Ok so a bit of history : this term comes from customizing cheap jdm cars to make them look faster. Here  it refers to making your setup look aesthetically pleasing.</p>
+            
+            <h2>Getting Started</h2>
+            <p>If you are new to ricing (and linux in general as I assume), you may need something you can rice. Most posts on reddit are about riced window managers, hence here too I'll cover how to rice window managers. What is a window manager? It is exactly what the name says : manage windows. These are different from desktop environments like KDE Plasma, Gnome, XFCE, Cinnamon etc. Window managers are a bit more bare-bones. (btw in wayland, these are called compositors and compositing managers, not window managers.)</p>
+	    <h3>What is Xorg, What is Wayland? </h3>
+<p>What is this xorg and wayland you speak of?..... These are display protocols. If you don't know which one to pick, just use Wayland, as it is new and currently mainstream. There is a very good chance that you are in a Wayland environment. <a href="https://wayland.freedesktop.org/">Read more about it here.</a> Most of this guide will be wayland focused.</p>
+            
+            <h3>Recommended WMs/Compositors</h2>
+            <ul>
+                <li><strong>Wayland:</strong> Niri, SwayFX, Hyprland </li>
+                <li><strong>Xorg:</strong> i3wm, Bspwm, AwesomeWM, Openbox</li>
+            </ul>
+<p>Just pick one! My own recommendation would be <a href="https://github.com/YaLTeR/niri/">Niri.</a></p>
+            
+            <h3>Status Bars</h3>
+            <ul>
+                <li><strong>Wayland:</strong> Waybar, Swaybar</li>
+                <li><strong>Xorg:</strong> Polybar, Lemonbar, Tint2</li>
+            </ul>
+	<h3> Widgeting systems </h2>
+	<p>Bars mentioned above are fairly simple and may not suite needs of some of you, who doesn't want a nice dashboard, custom bar, control panel, network widget, music & notifications and a lot more!</p1>
+            <ul>
+<li><strong><a href="https://github.com/elkowar/eww">Eww</a></strong>: Elkowar's Wacky Widgets, configured in a lisp-like language</li>
+<li><strong><a href="https://aylur.github.io/ags/">AGS</a></strong>: Ayulur's GTK Shell, configured in multiple languages, mainly Typescript and Javascript</li>
+<li><strong><a href="https://github.com/Fabric-Development/fabric">Fabric Shell</a></strong>: Written and configured in Python</li>
+<li><strong><a href="https://quickshell.outfoxxed.me/">Quickshell</a></strong>: Configured in QML</li>
+<li><strong><a href="https://awesomewm.org/">AwesomeWM</a></strong>: Although not a widgeting system itself, it has a really nice widgeting system configured in Lua.</li>
+	<p>NOTE: Among the above, I have only used Eww, Ags and AwesomeWM. I would recommend AGS as it is more batteries included and typescript is easier. AwesomeWM is the way to go if you also want a window manager.
+            </ul>
+<h3> Fetch Tools </h3> 
+<p> Its not a rice unless you use a fetch tool. A cool ascii art and system info in terminal makes you look like a hacker man (/j). There are a ton of them around, like FastFetch, Neofetch, BunnyFetch, and my own work in progress fetch tool (shilling myself) written in assembly - <a href="https://github.com/TripleRestriction/FetchASM/"> FetchASM.</a> You can try writing your own fetch tool, its fairly simple and a fun way to learn more!</p>
+
+            <!-- END: Type your guide content here -->
+        </div>
+    </div>
+    
+    <a href="https://github.com/TripleRestriction/" class="github-link" target="_blank">
+        <svg class="github-icon" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+    </a>
+    
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+            menuToggle.classList.toggle('hidden');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+            menuToggle.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
