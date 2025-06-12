@@ -55,6 +55,9 @@
 	a{
 		color: var(--oxo-cyan);
 	}
+	img{
+		align: center;
+	}
         h1 {
             font-size: 2.5rem;
             font-weight: 700;
@@ -295,6 +298,17 @@
             </ul>
 <p>Just pick one! My own recommendation would be <a href="https://github.com/YaLTeR/niri/">Niri.</a></p>
             
+            <h3>Terminal Emulators</h3>
+	<p>A lof of ricing will start from terminals. Here are some terminals that I have used, and these are the only terminals I have extensively used, not really a 'best terminal emulator' list.</p>
+            <ul>
+                <li><strong>Foot:</strong> (wayland only) a really nice and fast terminal</li>
+                <li><strong>Alacritty:</strong> a just works terminal </li>
+                <li><strong>URxvt:</strong> (Xorg) another really fast terminal that supports image rendering</li>
+                <li><strong>XTerm:</strong> (Xorg) really fast but I recommend URxvt over this</li>
+                <li><strong>Kitty:</strong> a bit slower but another just works terminal that supports image rendering</li>
+                <li><strong>st:</strong> (Xorg) fast but a hassle to configure</li>
+            </ul>
+<p> Why is image rendering in terminal important?... It's not, but you can things like previewing images in TUI file managers (like ranger and yazi), show images in fetch output and do other cool stuff like reading manga in a terminal! </p>
             <h3>Status Bars</h3>
             <ul>
                 <li><strong>Wayland:</strong> Waybar, Swaybar</li>
@@ -304,7 +318,7 @@
 	<p>Bars mentioned above are fairly simple and may not suite needs of some of you, who doesn't want a nice dashboard, custom bar, control panel, network widget, music & notifications and a lot more!</p1>
             <ul>
 <li><strong><a href="https://github.com/elkowar/eww">Eww</a></strong>: Elkowar's Wacky Widgets, configured in a lisp-like language</li>
-<li><strong><a href="https://aylur.github.io/ags/">AGS</a></strong>: Ayulur's GTK Shell, configured in multiple languages, mainly Typescript and Javascript</li>
+<li><strong><a href="https://aylur.github.io/ags/">AGS</a></strong>: (wayland only) Ayulur's GTK Shell, configured in multiple languages, mainly Typescript and Javascript</li>
 <li><strong><a href="https://github.com/Fabric-Development/fabric">Fabric Shell</a></strong>: Written and configured in Python</li>
 <li><strong><a href="https://quickshell.outfoxxed.me/">Quickshell</a></strong>: Configured in QML</li>
 <li><strong><a href="https://awesomewm.org/">AwesomeWM</a></strong>: Although not a widgeting system itself, it has a really nice widgeting system configured in Lua.</li>
@@ -315,10 +329,13 @@
 <h2>Actually getting started</h1>
 <p> Here I will lay down some steps you can follow when ricing, these are not hard and fast rules but certain guidelines or checklist that you can follow, they don't need to be done in the exact order either, you can do step 2 before 3 if you want to! </p>
 <h3> Step 1: Have a reference </h3>
-<p> Before you actually start ricing, have a reference, an idea or an image in your head that you want to replicate. This is helpful as the brain doesn't just create ideas. Look at some rice, like google "awesomewm rices", "eww linux rices". This will help you keep a certain goal in mind. As you get better, you will not need references and will be able to create more "orignal" rices. </p>
+<p> Before you actually start ricing, have a reference, an idea or an image in your head that you want to replicate. This is helpful as the brain doesn't just create ideas out of thin air. Look at some rice, like google "awesomewm rices", "eww linux rices". This will help you keep a certain goal in mind. As you get better, you will not need references and will be able to create more "orignal" rices. </p>
 <p> Example reference: (an old rice of mine) </p>
-<img src="../assets/rice1.png" alt="Example rice screenshot"/>
-            <!-- END: Type your guide content here -->
+<img src="../assets/rice1.png" alt="Example rice screenshot" width="800" />
+<p> When looking at a reference take notes of the bar style, window style, window decorations(titlebars), custom widgets, colors, background wallpaper, font, and other effects like shadows, blur etc.</p>
+<p>(In this rice, I am usin Hyprland with double border plugin, and AGS as my bar and music widget, the color palette is gruvbox)</p>
+<p> NOTE: This step is very important, it can save you a lot of time. Instead of asking others "what should I add?" you will already know what to add. </p>
+<h3> Step 2: Find a color palette </h2>
         </div>
     </div>
     
