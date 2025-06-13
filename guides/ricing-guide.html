@@ -88,6 +88,12 @@
             margin-bottom: 0.5rem;
             font-size: 1.2rem;
         }
+        .guide-content h4 {
+            color: var(--oxo-blue);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
         .guide-content p {
             margin-bottom: 1rem;
         }
@@ -278,30 +284,30 @@
     <div class="container">
         <h1>How to 🍚</h1>
         <p class="subtitle">how to customize your linux desktop</p>
-        <p class="subtitle">[WIP RIGHT NOW, MAY HAVE ERRORS] Disclaimer: I am not a ricing expert. This guide is meant for beginners.</p>
+        <p class="subtitle">Disclaimer: I am not a ricing expert. This guide is meant for beginners.</p>
         
         <div class="guide-content">
             <!-- START: Type your guide content here -->
-            <p>Ricing is an art, you wanna learn this art. You see those cool reddit posts, or your nerd friend or perhaps PewDiePie and want your setup to look like that, then fear not! You are at the rice (pun intended) spot!</p>
+            <p>Ricing is an art, you wanna learn this art. You see those cool Reddit posts, or your nerd friend or perhaps PewDiePie and want your setup to look like that, then fear not! You are at the rice (pun intended) spot!</p>
             
             <h2>What is Ricing?</h2>
-            <p>Wait wait wait hold on.... What is Ricing? Ok so a bit of history : this term comes from customizing cheap jdm cars to make them look faster. Here  it refers to making your setup look aesthetically pleasing.</p>
+            <p>Wait wait wait hold on.... What is Ricing? Ok so a bit of history: this term comes from people customizing cheap JDM cars to make them look faster. Here, it refers to making your setup look aesthetically pleasing.</p>
             
             <h2>Getting Started</h2>
-            <p>If you are new to ricing (and linux in general as I assume), you may need something you can rice. Most posts on reddit are about riced window managers, hence here too I'll cover how to rice window managers. What is a window manager? It is exactly what the name says: manage windows. These are different from desktop environments like KDE Plasma, Gnome, XFCE, Cinnamon etc. Window managers are a bit more bare-bones. (btw in wayland, these are called compositors and compositing managers, not window managers.)</p>
-<p>Btw: Almost all of you config files will sit in ~/.config/ directory. It is recommended to copy default configs from the git of the project (or your system) and use them as base to build on top. Google (or your preferred search engine), Man pages, and --help flags are you best friends.</p>
+            <p>If you are new to ricing (and linux in general as I assume), you may need something you can rice. Most posts on Reddit are about riced window managers, hence here too I'll cover how to rice window managers. What is a window manager? It is exactly what the name says: manage windows. These are different from desktop environments like KDE Plasma, Gnome, XFCE, Cinnamon etc. Window managers are a bit more bare-bones. (in wayland these are called compositors and compositing managers, not window managers.)</p>
+<p>NOTE: Almost all of your config files will sit in ~/.config/ directory. It is recommended to copy default configs from the git of the project (or your system) and use them as base to build on top. Google (or your preferred search engine), Man pages, and --help flags are your best friends.</p>
 	    <h3>What is Xorg, What is Wayland? </h3>
-<p>What is this xorg and wayland you speak of?..... These are display protocols. If you don't know which one to pick, just use Wayland, as it is new and currently mainstream. There is a very good chance that you are in a Wayland environment. <a href="https://wayland.freedesktop.org/">Read more about it here.</a></p>
+<p>What are these "Xorg" and "Wayland" you speak of?... These are display server protocols. If you don't know which one to pick, just use Wayland, as it is new and currently mainstream. There's a very good chance that you are using a Wayland environment. <a href="https://wayland.freedesktop.org/">Read more about it here.</a></p>
             
-            <h3>Recommended WMs/Compositors</h2>
+            <h3>Recommended WMs/Compositors</h3>
             <ul>
                 <li><strong>Wayland:</strong> Niri, SwayFX, Hyprland </li>
                 <li><strong>Xorg:</strong> i3wm, Bspwm, AwesomeWM, Openbox</li>
             </ul>
 <p>Just pick one! My own recommendation would be <a href="https://github.com/YaLTeR/niri/">Niri.</a></p>
-<p>NOTE: There are too many window managers and compositors that exist, not all of them can be listed here. Each one of them serve a different use case.</p>            
+<p>NOTE: There are too many window managers and compositors that exist, not all of them can be listed here. Each one of them serves a different use case.</p>            
             <h3>Terminal Emulators</h3>
-	<p>A lof of ricing will start from terminals. Here are some terminals that I have used, and these are the only terminals I have extensively used, not really a 'best terminal emulator' list.</p>
+	<p>A lot of ricing will start from terminals. Here are some terminal emulators that I have used, and these are the only terminals I have extensively used, not really a 'best terminal emulator' list.</p>
             <ul>
                 <li><strong>Foot:</strong> (wayland only) a really nice and fast terminal</li>
                 <li><strong>Alacritty:</strong> a just works terminal </li>
@@ -309,35 +315,35 @@
                 <li><strong>XTerm:</strong> (Xorg) really fast but I recommend URxvt over this</li>
                 <li><strong>Kitty:</strong> a bit slower but another just works terminal that supports image rendering</li> <li><strong>st:</strong> (Xorg) fast but a hassle to configure</li>
             </ul>
-<p> Why is image rendering in terminal important?... It's not, but you can things like previewing images in TUI file managers (like ranger and yazi), show images in fetch output and do other cool stuff like reading manga in a terminal! </p>
-	<p>NOTE: (Xorg) means that the terminal was made for X11 environment, it will run in wayland but through Xwayland (compatibility layer), which is a bit slower than applications which natively suppoort wayland.</p>
+<p> Why is image rendering in terminal important?... It's not, but you can do things like previewing images in TUI file managers (like ranger and yazi), show images in fetch output and do other cool stuff like reading manga in a terminal! </p>
+	<p>NOTE: "(Xorg)" means that the terminal was made for X11 environment, it will run in Wayland but through Xwayland (a compatibility layer), which is a bit slower than applications which natively support Wayland. (like foot, ghostty, alacritty, kitty etc.)</p>
             <h3>Status Bars</h3>
             <ul>
                 <li><strong>Wayland:</strong> Waybar, Swaybar</li>
                 <li><strong>Xorg:</strong> Polybar, Lemonbar, Tint2</li>
             </ul>
-	<h3> Widgeting systems </h2>
-	<p>Bars mentioned above are fairly simple and may not suite needs of some of you, who doesn't want a nice dashboard, custom bar, control panel, network widget, music & notifications and a lot more!</p1>
+	<h3> Widgeting systems </h3>
+	<p>Bars mentioned above are fairly simple and may not suit needs of some of you. Who doesn't want a nice dashboard, custom bar, control panel, network widget, and custom music & notifications!</p1>
             <ul>
 <li><strong><a href="https://github.com/elkowar/eww">Eww</a></strong>: Elkowar's Wacky Widgets, configured in a lisp-like language</li>
-<li><strong><a href="https://aylur.github.io/ags/">AGS</a></strong>: (wayland only) Ayulur's GTK Shell, configured in multiple languages, mainly Typescript and Javascript</li>
+<li><strong><a href="https://aylur.github.io/ags/">AGS</a></strong>: (Wayland only) Ayulur's GTK Shell, configured in multiple languages, mainly TypeScript and JavaScript</li>
 <li><strong><a href="https://github.com/Fabric-Development/fabric">Fabric Shell</a></strong>: Written and configured in Python</li>
 <li><strong><a href="https://quickshell.outfoxxed.me/">Quickshell</a></strong>: Configured in QML</li>
 <li><strong><a href="https://awesomewm.org/">AwesomeWM</a></strong>: Although not a widgeting system itself, it has a really nice widgeting system configured in Lua.</li>
 	<p>NOTE: Among the above, I have only used Eww, AGS and AwesomeWM. I would recommend AGS as it is more batteries included and typescript is easier. AwesomeWM is the way to go if you also want a window manager.
             </ul>
 <h3> Fetch Tools </h3> 
-<p> Its not a rice unless you use a fetch tool. A cool ascii art and system info in terminal makes you look like a hacker man (/j). There are a ton of them around, like FastFetch, Neofetch, BunnyFetch, and my own work in progress fetch tool (shilling myself) written in assembly - <a href="https://github.com/TripleRestriction/FetchASM/"> FetchASM.</a> You can try writing your own fetch tool, its fairly simple and a fun way to learn more linux!</p>
-<h2>Actually getting started</h1>
-<p> Here I will lay down some steps you can follow when ricing, these are not hard and fast rules but certain guidelines or checklist that you can follow, they don't need to be done in the exact order either, you can do step 2 before 3 if you want to! </p>
-<h3> Step 1: Have a reference </h3>
-<p> Before you actually start ricing, have a reference, an idea or an image in your head that you want to replicate. This is helpful as the brain doesn't just create ideas out of thin air. Look at some rice, like google "awesomewm rices", "eww linux rices". This will help you keep a certain goal in mind. As you get better, you will not need references and will be able to create more "orignal" rices. </p>
+<p> It's not a rice unless you use a fetch tool. A cool ASCII art and system info in terminal makes you look like a hackerman (/j). There are a ton of them around, like FastFetch, Neofetch, BunnyFetch, and my own work in progress fetch tool (shameless shill) written in assembly - <a href="https://github.com/TripleRestriction/FetchASM/"> FetchASM.</a> You can try writing your own fetch tool, it's fairly simple and a fun way to learn more Linux!</p>
+<h2>Actually getting started</h2>
+<p> Here I will lay down some steps you can follow when ricing, these are not hard and fast rules but certain guidelines or a checklist that you can follow, they don't need to be done in the exact order either, you can do step 2 before 3 if you want to! </p>
+<h3> Step 1: Having a reference </h3>
+<p> Before you actually start ricing, have a reference, an idea or an image in your head that you want to replicate. This is helpful as the brain doesn't just create ideas out of thin air. Look at some rice, like Google "awesomewm rices", "eww linux rices". This will help you keep a certain goal in mind. As you get better, you will not need references and will be able to create more "original" rices. </p>
 <p> Example reference: (an old rice of mine) </p>
-<img src="../assets/rice1.png" style="width: 60%; display: block; margin: 0 auto;" alt="peak">
+<img src="../assets/rice1.png" style="width: 70%; display: block; margin: 0 auto;" alt="gruvbox">
 <p> When looking at a reference take notes of the bar style, window style, window decorations (titlebars), custom widgets, colors, background wallpaper, font, and other effects like shadows, blur etc.</p>
-<p>(In this rice, I am usin Hyprland with double border plugin, and AGS as my bar and music widget, the color palette is gruvbox)</p>
+<p>(In this rice, I am using Hyprland with double border plugin, and AGS as my bar and music widget, the color palette is gruvbox)</p>
 							<p><b> NOTE: This step is very important, it can save you a lot of time. Instead of asking others "what should I add?" you will already know what to add. </b></p>
-<h3> Step 2: Find a color palette </h2>
+<h3> Step 2: Finding a color palette </h2>
 <p>There are a lot of color palettes, like Gruvbox, Nord, TokyoNight, Catppuccin, Everforest, Rose Pine etc. Pick one, or use the same one as in your reference. Here are my favourite ones:</p>
 <div style="display: flex; gap: 10px;">
 <div style="flex: 1; text-align: center;">
@@ -349,12 +355,12 @@
 <p><a href="https://github.com/ayu-theme/ayu-vim">Ayu Light</a></p>
 </div>
 </div>
-<p> A good rule of thumb is to use only <b>two to three </b>colors of your palette when theming your system. In the first image, I am using only yellowish-brown, and magenta, with some green thrown here and there for randomness. In the second image, it is magenta as accent, and some light and dark gray for other UI elements. (of course you should have more colors for the syntax highlighting of your editor)</p>
-<p><b> NOTE: Usage of tools like pywal to generate a color schemes is generally discouraged, even though they make getting a color palette extremely simple. These rarely generate good color palette and your rice will often end up looking sloppy. Instead, use a premade color scheme that was actually designed by usage in mind. </b></p>
-<p> Ofcourse, you can make your own color palette, start with premade one, try changing colors and then see the magic.</p>
-<p> (PS: this step can come later when ricing after you have laid foundations of your widgets, if you are making any)</p>
-<h3> Step 3: Getting a wallpaper </h3>
-<p> Finding a good wallpaper is hard, not too complex, not too simple, right contrast, rigt colors....oh no. Here are some sources</p>
+<p> A good rule of thumb is to use only <b>two to three</b> colors of your palette when theming your system. In the first image, I am using only yellowish-brown, and magenta, with some green thrown here and there for randomness. In the second image, it is magenta as accent, and some light and dark gray for other UI elements. (of course you should have more colors for the syntax highlighting of your editor)</p>
+<p><b> NOTE: Usage of tools like pywal to generate a color schemes is generally discouraged, even though they make getting a color palette extremely simple. These rarely generate good color palettes and your rice will often end up looking sloppy. Instead, use a premade color scheme that was actually designed with usage in mind. </b></p>
+<p> Of course, you can make your own color palette, start with premade one, try changing colors and then see the magic.</p>
+<p> (PS: This step can come later in ricing process, after you have laid foundations for your widgets)</p>
+<h3> Step 3: Getting a wallpaper</h3>
+<p> Finding a good wallpaper is hard, not too complex, not too simple, right contrast, right colors....oh no. Here are some sources</p>
             <ul>
 <li><strong><a href="https://www.google.com/">Google.</a></strong> Just. Search.</li>
 <li><strong><a href="https://www.pexels.com/">Pexels</a></strong></li>
@@ -367,18 +373,18 @@
 <p> Again, you do not need the most complicated wallpaper. A masterpiece rice by Xander (xander.69) from the Unixporn Discord...</p>
 <img src="../assets/xander.69.masterpiece.png" style="width: 70%; display: block; margin: 0 auto;" alt="peak">
 <h3>Step 4: Ricing your terminal</h3>
-<p>It's not that hard. Just copy and paste. If you are lucky, the theme may have a config file for your termianl.</p>
-<p>As for getting nice looking prompts, you can get them at <a href="https://github.com/ohmyzsh/ohmyzsh">OhMyZsh</a>, <a href="https://starship.rs/">Starship</a> or perhaps writing your own config, it is actually easy. <a href="https://linuxcommand.org/lc3_lts0010.php">What the heck is a shell??</a></p>
-<p>What shell should I use? Which shell is the best?...There is not answer to these questions. Different shells are for different kind of users. I like zsh but bash is also good. You can look at Xonsh, Fish, Nushell, Kornshell, Hilbish, Elvish... too many to talk about.</p>
+<p>It's not that hard. Just copy and paste. If you are lucky, the theme may already have a config file for your termianl.</p>
+<p>As for getting nice looking prompts, you can get them at <a href="https://github.com/ohmyzsh/ohmyzsh">OhMyZsh</a>, <a href="https://starship.rs/">Starship</a> or perhaps writing your own config, it is actually easy. <a href="https://linuxcommand.org/lc3_lts0010.php">What is a shell??</a></p>
+<p>What shell should I use? Which shell is the best?...There is no answer to these questions. Different shells are for different kind of users. I like zsh but bash is also good. You can look at Xonsh, Fish, Nushell, Kornshell, Hilbish, Elvish... too many to talk about.</p>
 <h3>Step 5: Ricing the bar</h3>
 <img src="../assets/simplebar.png" alt="">
 <p>This is where some real ricing starts. This step appears to be difficult but is actually very simple. Here are some points to ricing you bar:</p>
 <ol>
 <p>1) Start by looking at your reference image. Take note of what you want your bar to look like.</p>
-<p>2) Search for the default configs of your bar and try changing it around, all of the options are in English and are not hard to understand. </p>
+<p>2) Search for the default configs of your bar and try changing it around; all of the options are in English and are not hard to understand. </p>
 Alternatively for waybar look at the <a href="https://github.com/Alexays/Waybar/wiki/Examples">example configs.</a> Try modifying the config to your liking, change the colors (in the css file), change the shapes, change font, add new icons, remove modules, add modules etc.
 <p>This approach is recommended over blindly jumping into customizing waybar.</p>
-<p>3) Look at someone else's configs if you do not understand a particular style, or ask them how they did it. (ask the documentation and google first!)</p>
+<p>3) Look at someone else's configs if you do not understand a particular style, or ask them how they did it. (ask the documentation and Google first!)</p>
 <p>4) Try making your bar vertical.</p>
 <p>5) Reading the documentation is very useful.</p>
 </ol>
@@ -394,8 +400,47 @@ Alternatively for waybar look at the <a href="https://github.com/Alexays/Waybar/
 <p>A lot of apps that I run are made with <a href="https://wiki.archlinux.org/title/GTK">GTK</a>, like Thunar File Manager, Pavucontrol, xdg-desktop-portal-gtk (those "choose file" popups) and a lot more. Most popular color palettes have a GTK theme available. You can find them and put them in your ~/.themes/ folder.</p>
 <p>Then you can use <a href="https://github.com/nwg-piotr/nwg-look">nwg-look</a> to set the theme. If you want to make your own GTK theme, look at <a href="https://gitlab.gnome.org/GNOME/gtk/-/tree/main/gtk/theme/Default">this.</a> (or <a href="https://github.com/themix-project/themix-gui">this</a> if you are lazy like me)</p>
 <p>Similarly for <a href="https://wiki.archlinux.org/title/Icons">icons</a>, put the folder in ~/.icons/ then use nwg-look to set them. <a href="https://wiki.archlinux.org/title/Cursor_themes">Cursor themes</a> are also installed in the same fashion, but you may have to check documentation of your compositor to set properly.</p>
-        </div>
-    </div>
+<h3>Step 8: Special Effects</h3>
+<p>This part is my favourite. From special effects, I mean rounded corners, shadows, animations, dimming, blur, transparency etc. This is handled by your Wayland compositor (picom in case of Xorg). The implementation differs between different compositor. Here I will discuss only a few effects.</p>
+<h4>Window Dimming</h4>
+<p>This effect can give a very aesthetic look, but should be used with caution. A really good example of well done dimming would be Xander's rice in Wallpaper section above.</p>
+<img src="../assets/rice5.png" style="width: 70%; display: block; margin: 0 auto;" alt="rawrr">
+<p></p>
+<div style="flex: 1; text-align: center;">
+<p>(my rice from 2022) Unfocused window in the above screen shot has been dimmed.</p>
+</div>
+<h4>Shadows</h4>
+<p>Shadows can make a rice fit together. Not enough contrast? Try turning on the shadows! Shadows go very well with window dimming as well. Again, I would refer to Xander's rice above (in wallpaper section), shadows only for the focused window and the dim gives a really nice focus effect.</p>
+<img src="../assets/rice6.png" style="width: 70%; display: block; margin: 0 auto;" alt="idk">
+<p></p>
+<div style="flex: 1; text-align: center;">
+<p>Try playing with blocky shadows! (by setting shadow radius or shadow blur to a lower value)</p>
+</div>
+<h4>Rounded Corners</h4>
+<p>The general rule of thumb when trying rounded corners is to no overdo it. Try very small values of radius and experiment with them.</p>
+<p>but nobody is stopping you if you wanna overdo it........</p>
+<img src="../assets/rice7.png" style="width: 50%; display: block; margin: 0 auto;" alt="insert circular windows here">
+<h3>Step 9: Fonts</h3>
+<p>To install fonts, put the font files in ~/.fonts/ and set them using nwg-look and your respective applications.</p>
+<p>fc-list | grep 'font keyword here' is a very useful command...</p>
+<p>...ok hear me out, this is where all my wits fall apart. If you can't tell already: I suck at choosing and using fonts. This is the part I am worst at.</p>
+<p>For starters, JetBrains Mono and Iosveka Mono are great monospace fonts. Ubuntu UI is a good UI font. This entire site is using Share Tech Mono Font. If you want icons in your font (which is a very popular way to show icons in terminals and bars like waybar), check out <a href="https://www.nerdfonts.com/">Nerd Fonts.</a></p>
+<p>Currently using Terminus, a <a href="https://en.wikipedia.org/wiki/Computer_font">bitmap</a> font.</p>
+<h3>Step 10: Getting advice</h3>
+<p>This is the final step in this guide, and a very important one - getting advice. People with sharp eyes and more experience can teach you a lot. Every now and then people criticize me and make me better at this craft.</p>
+<p>Several people like me are always happy to criticize and give advice. Ask people for advice. Just. Ask. </p>
+<p>(but don't ask vague questions like "what should i add"!!!)</p>
+<h2>Wrapping it up</h2>
+<p>If you actually read all that then thank you and congratulations. This guide took some effort to write (and forced me to learn webdev), so I really appreciate you (the reader) for reading all this.</p>
+<p>Keep in mind that at the end of the day, YOU are the one using your device, so theme it however you want. Having fun is more important than anything else. You can just scrap everything I said in this guide and do it YOUR own way. It's all up to you.</p>
+<div style="flex: 1; text-align: center;">
+<h1>TL;DR</h1>
+<h3>Read the friendly manual.</h3>
+<p>##################</p>
+<p>Draco Silver<br>13th June 2025</p>
+</div>
+</div>
+</div>
     
     <a href="https://github.com/TripleRestriction/" class="github-link" target="_blank">
         <svg class="github-icon" viewBox="0 0 24 24">
