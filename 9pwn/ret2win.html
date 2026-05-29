@@ -11,7 +11,7 @@
 		<h3>NOTE: this writeup is for AMD64 </h3>
 		<p>I'm gonna assume that you know what a ret2win is: poisoning the return address to change the program's execution.
 			In this writeup I will explain how to write and compile a simple C program and how to use 9front's debugger "acid"
-			to get what we want.</p><b>
+			to get what we want.</p>
 		<h2>Writing the vulnerable program </h2>
 			<pre><code>#include &lt;u.h>
 #include &lt;libc.h>
@@ -33,9 +33,9 @@ void main(void)
     print("nothing happened\n");
 }</code></pre>
 			<p>So we are using u.h and libc.h instead of stdio.h like we normally would...and we are using print() instead of printf() because 9front's C compiler and C library are a different from musl/glibc. print() is also different than printf() but honestly I did not bother looking up the differences (as of right now).</p> 
-<h2>Compiling (and linking) the vulnerable program</h3>
+<h2>Compiling (and linking) the vulnerable program</h2>
 <p>The compiler we will use is 6c, which compiles for AMD64 architecture. For i386 we have 8c, for ARM32 there is 5c, for MIPS little endian we have 0c etc.
-				<b> </p>
+</p>
 			<p>Similarly, the linker we will use is 6l.</p>
 			<p>The following creates a file bof.6:</p>
 		<pre><code>6c bof.c</code></pre>
@@ -49,7 +49,7 @@ faaaaah
 nothing happened
 cirno#</code></pre>
 <h2>Using acid to debug</h2>
-<p>Not a great debugger, especialy if you are used to gdb but it works. Will get this job done, but first:</p>
+<p>Not a great debugger, especially if you are used to gdb but it works. Will get this job done, but first:</p>
 						<pre><code>man acid</code></pre>
 						<p>Just have a look at it so you know what you're getting into. Then fire up acid:</p>
 						<pre><code>acid ./bof</code></pre>
@@ -80,7 +80,7 @@ acid:
 						<p>And secret() is where we wanna direct our execution to, so now we know that it lives
 						at 0x0000000000200028</p>
 						<p>But wait what if we do not know the function names? 
-						What if the binary is stripped? Well then my friend you wait for anoter blog of mine
+						What if the binary is stripped? Well then my friend you wait for another blog of mine
 						where I have figured this out, or you figure it out for yourself.</p>
 						<p>Now let us set a break point at our read function, but first we need to start acid (don't ask me why!).
 						Run the new() command</p>
@@ -108,7 +108,7 @@ RET
 <p>So since we know that our payload will end up at SP+0x28, let's dump that memory area, after you have sent a few
 As in the input (which will show up as 0x414141...)</p>
 <pre><code>dump(*SP+0x28, 20, "X")</code></pre>
-<p>Look at the memory output, count the 0x41s you sent (in this example, I sent 10) to see if our math is corect.
+<p>Look at the memory output, count the 0x41s you sent (in this example, I sent 10) to see if our math is correct.
 Also look at all the values.</p>
 <p>From my observation it seems like 0xfefefefe is the uninitialized memory. But can you spot something else? Okay here we go:
 </p>
