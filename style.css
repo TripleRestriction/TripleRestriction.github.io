@@ -1,17 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
 body {
     background-color: #000000;
     color: #a8ced0;
-	font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 300; 
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.6;
 }
+
 h1, h2 {
     color: #a8ced0;
     border-bottom: 1px solid #aaf0c1;
     padding-bottom: 5px;
+    font-weight: 300; 
 }
 
 h1 { font-size: 2rem; }
@@ -24,7 +28,7 @@ a {
 
 a:hover {
     background-color: #a8ced0;
-	color: #000000;
+    color: #000000;
 }
 
 .post-list {
@@ -34,4 +38,17 @@ a:hover {
 
 .post-item {
     margin-bottom: 15px;
+}
+
+pre {
+    background-color: #0d1015;
+    border: 1px solid #000000;
+    padding: 15px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+code {
+    color: #a8ced0;
+    font-weight: 300; 
 }

