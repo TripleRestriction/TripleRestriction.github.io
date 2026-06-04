@@ -8,7 +8,7 @@
 </head>
 <body>
     <main>
-            <h1>9pwn/assembly: A brief 9front assembly tutorial (WIP)</h1>
+            <h1>9pwn/assembly: A brief 9front assembly tutorial</h1>
 			<h3>NOTE: this guide is for AMD64</h3>
 			<p>So last time I rambled about <a href="./9pwn/ret2win.html">how to do a ret2win in 9front</a> (which you
 				should read!). Today I wanna dive a bit into writing some assembly in 9front.</p>
@@ -24,5 +24,96 @@ arg1: 0x10+RSP
 <pre><code>arg0: RBP
 arg1: 0x8+RSP
 ...</code></pre>
+			<p>The return value is stored in RAX.</p>
+<h2>Making a quitter</h2>
+			<p>Before you make a "quitter", have a look at /sys/src/libc/9syscall/sys.h as it has syscall
+			numbers defined in it. For a quitter we need the void exits(char *msg) syscall which has the number
+			0x8</p>
+			<pre><code>DATA msg+0(SB)/4, $"1337" // setup the exit status string, stored in the file
+GLOBL msg(SB), $4 // make it visible to the linker
+
+TEXT _main(SB), $0 // entry point
+MOVQ $msg(SB), 0x8(SP) // setup arg0
+MOVQ $0x8, BP // setup rbp for exits()
+SYSCALL // execute the syscall</code></pre>
+			<p>To assemble:</p>
+			<pre><code>6a quitter.s</code></pre>
+			<p>To link:</p>
+			<pre><code>6l -o quitter quitter.6</code></pre>
+			<p>Now when you run the program and check the status:</p>
+			<pre><code>./quitter
+echo $status
+quitter 765: 1337</code></pre>
+			<p>Truly very elite of you.</p>
+<h2>Explanation of the monstrosity above</h2>
+<p>Yes the syntax looks horrible, since I only knew Intel syntax this truly messed my brain. Anyways some questions
+			I try to answer:</p>
+			<h3>Why is it BP, SP, and AX instead of RBP, RSP and RAX? WHERE IS THE "R"?!?!?!</h3>
+			<p>I ated it.</p>
+			<p>Ok but seriously it just isn't there. That's how the assembler is built. Prefixes are added to the instruction
+			names instead:</p>
+			<pre><code>B: 8bit (MOVB, ADDB etc)
+W: 16bit (MOVW, ADDW etc)
+L: 32bit (MOVL, ADDL etc)
+Q: 64bit (MOVQ, ADDQ etc)</code></pre>
+			<p>I actually like this approach more, I don't need to remember all the divisions of the registers.</p>
+			<h3>What does 0x8(SP) mean?</h3>
+			<p>0x8+rsp</p>
+			<h3>What is SB?</h3>
+			<p>Stands for static base and it is a pseudo register, bascially stores the virtual memory address where the binary will be loaded to.</p>
+			<h3>Is the source and destination reversed?</h3>
+			<p>Indeed, Intel syntax you would do</p>
+			<pre><code>MOV RAX, 0x1337</code></pre>
+			<p>But in 9front assembler syntax</p>
+			<pre><code>MOVQ $0x1337, AX</code></pre>
+			<h3>What does msg+0(SB) mean?</h3>
+			<p>Since SB is the address of the start of the binary, msg+0(SB) literally means msg+0+SB where msg 
+			is also an offset in the binary.</p>
+			<h3>What is the $ symbol?</h3>
+			<p>It means the intermediate value:</p>
+			<pre><code>MOVQ $0x1337, AX // puts 0x1337 into RAX
+MOVQ 0x1337, AX // finds whatever is stored at memory location 0x1337 and puts that into RAX</code></pre>
+			<p>And</p>
+			<pre><code>MOVQ $msg(SB), BP // put the value msg+SB into RBP
+MOVQ msg(SB), BP // puts the value at msg+SB, in our case the string "1337"</code></pre>
+
+<h2>Calling libc functions</h2>
+<p>Calling libc functions requires us to change up a few things, namely replacing _main with main and linking with 
+/amd64/lib/libc.a and keeping and eye out on the calling conventions. Here is a simple program:</p>
+<pre><code>GLOBL buf(SB), $64 // define a 64 byte buffer in data segment
+
+DATA msg+0(SB)/8, $"you said" // DATA directive only takes 8 bytes at once
+DATA msg+8(SB)/2, $": " // so you need two definitions like this
+GLOBL msg(SB), $8 // make it visble to the linker
+
+TEXT main(SB), $0x20
+// read(0, 64, buf)
+MOVQ $0, BP // int fd (arg0)
+MOVQ $buf(SB), 0x8(SP) // void *buf (arg1)
+MOVQ $64, 0x10(SP) // long nbytes (arg2)
+CALL read(SB)
+
+//print("you said: ")
+MOVQ $msg(SB), BP // (arg0)
+CALL print(SB)
+
+// print(buf)
+MOVQ $buf(SB), BP // (arg0)
+CALL print(SB)
+// exit(0)
+MOVQ $0, 8(SP) // (arg0)
+MOVQ $8, BP
+SYSCALL</code></pre>
+<p>Assemble (compile?) and link using:</p>
+			<pre><code>6a printer.s
+6l -o printer printer.6 /amd64/lib/libc.a</code></pre>
+<p>You should see something like this when you run it:</p>
+			<pre><code>./printer
+the plan fell off
+you said: the plan fell off</code></pre>
+<h2>Conclusion and extra resources</h2>
+<p>You should read the <a href="https://9p.io/sys/doc/asm.html">Plan 9 assmbler manual</a> and maybe check out some 
+assembly source in /sys/src/libc/amd64</p>
+<p>Hope u like it or something idk bye</p>
     </main>
 </body>
