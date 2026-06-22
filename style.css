@@ -24,6 +24,9 @@ h2 { font-size: 1.5rem; margin-top: 40px; }
 a {
     color: #a8ced0;
     text-decoration: none;
+    border: 1px solid #a8ced0;
+    padding: 1px 10px;
+    display: inline-block;
 }
 
 a:hover {
