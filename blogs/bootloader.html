@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog/Loadbooter</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<main>
+<h1>Writing a bootloader to load Linux</h2>
+<h3>NOTE: this is not a step by step guide as I have no idea what I am doing</h3>
+<p>Writing a bootloader was one of the things I always wanted to do. So I did it for my <a href="https://github.com/TripleRestriction/loadbooter-v1/">weekend project</a>; it was difficult. I will assume you know assembly before we begin.</p>
+<h2>Some background</h2>
+<p>When the computer loads up it starts the BIOS (or the UEFI firmware) which performs certain hardware tests called POST. During POST the BIOS also finds the Master Boot Record (MBR), this MBR is what I have written, and managed to fit the entire bootloader in it. <br> The MBR is a 512 byte file (which is tiny!) that contains instructions on how to boot into the operating system. It must end with 0x55AA (or 0xAA55...endianness always messes with my brain).</p>
+<h2>Hello World</h2>
+<p>Ask BIOS to hello your world</p>
+<pre><code>[BITS 16]                       ; tell nasm to compile this part as 16 bit real mode machine code
+[ORG 0x7c00]                    ; tell nasm that this file will load at 0x7c00
+
+start:
+    mov si, msg
+
+print: 
+    lodsb                       ; load byte by byte from data segment (ds) into al using si (ds:si)
+    cmp al, 0                   ; check if character is a null byte
+    je done
+    mov ah, 0x0e                ; 0x0e = write character in tty
+    int 0x10                    ; video interrupt
+    jmp print
+
+done:   
+    hlt
+ msg:
+     db "Hello World", 0
+
+;; pad the rest of the file
+times 510-($-$$) db 0x67
+dw 0xAA55
+</code></pre>
+<p>If you have written assembly Linux assembly with syscalls, you probably understand most of it. Compile and run using:</p>
+<pre><code>nasm -f bin boot.asm -o boot.bin
+qemu-system-i386 -m 512 -drive format=raw,file=./boot.bin
+</code></pre>
+<p>You should see something like this: (I ran qemu with -nographic flag)</p>
+<pre><code>SeaBIOS (version 1.17.0-10.fc44)
+
+
+iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+1EFCBE40+1EF0BE40 CA00
+                                                                               
+
+
+Booting from Hard Disk...
+    Hello World
+</code></pre>
+<p>Use xxd on boot.bin and observe what it looks like!</p>
+<h2>Linux Boot Protocol</h2>
+<p>How you write the bootloader depends on the kernel you are trying to load. The Linux kernel has a fixed boot protocol which you can find <a href="https://www.kernel.org/doc/html/v6.1/x86/boot.html">here</a>.</p>
+<p>First you need to get a bzImage or vmlinuz. You can compile it from the kernel source or get a super minimal one from <a href="https://github.com/TripleRestriction/loadbooter-v1/tree/master/bin">my repo.</a> The bzImage contains headers, legacy real mode code and setup code with the kernel in compressed format (xz, zstd or lzma depending on how it is compiled) which extracts itself as long as you jump to the setup code after meeting certain requirements...</p> For fun you can make a disk file using:  
+<p>
+  <pre><code>dd if=/dev/zero of=./disk.img bs=1M count=10 # make a 10MiB disk image
+dd if=./boot.bin of=./disk.img conv=notrunc # copy the bootloader into the disk image
+dd if=./bzImage of=./disk.img bs=512 seek=4 conv=notrunc # copy the bzImage into the 5th sector (there is probably a better way to do this)</code></pre>
+Then:
+<ul style="list-style-type: square;">
+<li>Clear out the registers (including segment registers) on boot</li>
+<li>Unlock A20 line (allows access to more memory)</li>
+<li>Load kernel headers from storage using Disk Access Packet structure into a (scratch) buffer</li>
+<li>Zero out 4096 bytes of a memory region (our zero page)</li>
+<li>Ask BIOS to put memory map in our zero page</li>
+<li>Copy the kernel headers into the zero page and pass it bootloader ID and kernel command line</li>
+<li>Create a global descriptor table structure and load it up using lgdt instruction</li>
+<li>Enable protected mode by or-ing first bit of CR0 register</li>
+<li>(Far) jump into 32 bit code and setup the registers</li>
+<li>Read rest of the kernel (from the offset you are going to jump to) using ATA ports as you can't use BIOS interrupts anymore</li>
+<li>Set ESI = address of your zero page</li>
+<li>Jump into the kernel</li>
+</ul>
+</p>
+
+<h2>Done</h2>
+<p>And that is how you write a bootloader, I can't make a real tutorial because it is very complicated. Explaining everything in a single blog will be impossible.
+  OSDEV wiki is always there to help you. Oh yes also add initrd support I was too lazy to do that. (Real tutorial soon:tm:)</p>
+<p>Bye</p>
+</main>
+</body>
